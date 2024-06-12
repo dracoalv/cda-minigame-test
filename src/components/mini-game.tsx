@@ -6,7 +6,9 @@ import leftBottomCommas from '#/assets/left-bottom-commas.svg';
 import rightBottomCommas from '#/assets/right-bottom-commas.svg';
 import { Howl } from 'howler';
 
-const TOTAL_TIME = 10; // Defina o tempo total para concluir o jogo.
+const MAX_SEQUENCES = 3; // Quantidade de sequencias por desafio
+const SEQUENCE_LENGTH = 8; // Quantidade de teclas por sequencia
+const TIME_PER_SEQUENCE = 4; // Tempo de cada sequencia
 
 const timerSound = new Howl({
   src: ['src/assets/sounds/timer.mp3'],
@@ -49,24 +51,22 @@ const getScores = () => {
 };
 
 export function MiniGame() {
-  const [sequence, setSequence] = useState<string[]>([]);
+  const [sequences, setSequences] = useState<string[][]>([]);
+  const [currentSequenceIndex, setCurrentSequenceIndex] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(TOTAL_TIME); // Use the TOTAL_TIME constant here
+  const [timeLeft, setTimeLeft] = useState(TIME_PER_SEQUENCE);
   const [isPlaying, setIsPlaying] = useState(false);
   const [message, setMessage] = useState('');
   const [score, setScore] = useState(0);
+  const [totalTime, setTotalTime] = useState(0);
   const [result, setResult] = useState<null | 'correct' | 'wrong'>(null);
   const [showRanking, setShowRanking] = useState(false);
+  const [sequenceTimerKey, setSequenceTimerKey] = useState(0);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
     if (isPlaying && timeLeft > 0) {
-      if (timeLeft <= TOTAL_TIME / 2) {
-        timerSound.rate(2.5); // Velocidade aumentada do som
-      } else {
-        timerSound.rate(2); // Velocidade normal do som
-      }
-
+      timerSound.rate(timeLeft <= TIME_PER_SEQUENCE / 2 ? 2.5 : 2);
       timer = setInterval(() => {
         setTimeLeft((prev) => prev - 1);
       }, 1000);
@@ -79,14 +79,18 @@ export function MiniGame() {
   }, [isPlaying, timeLeft]);
 
   const startGame = () => {
-    setSequence(generateSequence(8));
+    const generatedSequences = Array.from({ length: MAX_SEQUENCES }, () => generateSequence(SEQUENCE_LENGTH));
+    setSequences(generatedSequences);
+    setCurrentSequenceIndex(0);
     setCurrentIndex(0);
-    setTimeLeft(TOTAL_TIME);
+    setTimeLeft(TIME_PER_SEQUENCE);
     setIsPlaying(true);
     setMessage('');
     setScore(0);
+    setTotalTime(0);
     setResult(null);
     setShowRanking(false);
+    setSequenceTimerKey(prev => prev + 1);
     timerSound.play();
   };
 
@@ -94,21 +98,32 @@ export function MiniGame() {
     if (!isPlaying) return;
 
     const key = event.key.toUpperCase();
-    if (key === sequence[currentIndex]) {
+    if (key === sequences[currentSequenceIndex][currentIndex]) {
       keyboardSound.play();
       setCurrentIndex((prev) => prev + 1);
       setScore((prev) => prev + 1);
       setResult('correct');
 
-      if (currentIndex + 1 === sequence.length) {
-        const timeTaken = TOTAL_TIME - timeLeft;
-        saveScore(timeTaken);
-        setMessage(`Sucesso! Você completou a sequência em ${timeTaken} ${timeTaken === 1 ? 'segundo' : 'segundos'}!`);
-        setIsPlaying(false);
-        timerSound.stop();
+      if (currentIndex + 1 === sequences[currentSequenceIndex].length) {
+        const timeTaken = TIME_PER_SEQUENCE - timeLeft;
+        setTotalTime((prev) => prev + timeTaken);
         correctSequenceSound.play();
+        if (currentSequenceIndex + 1 === sequences.length) {
+          setMessage(`Sucesso! Você completou todas as sequências em ${totalTime + timeTaken} segundos!`);
+          setIsPlaying(false);
+          timerSound.stop();
+          successSound.play();
+          saveScore(totalTime + timeTaken);
+        } else {
+          setCurrentSequenceIndex((prev) => prev + 1);
+          setCurrentIndex(0);
+          setTimeLeft(TIME_PER_SEQUENCE);
+          setSequenceTimerKey(prev => prev + 1);
+          timerSound.stop();
+          timerSound.play();
+        }
       } else {
-        setResult(null); // Clear the result immediately
+        setResult(null);
       }
     } else {
       wrongSound.play();
@@ -117,7 +132,7 @@ export function MiniGame() {
       setIsPlaying(false);
       timerSound.stop();
     }
-  }, [isPlaying, sequence, currentIndex, timeLeft]);
+  }, [isPlaying, sequences, currentSequenceIndex, currentIndex, timeLeft, totalTime]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyPress);
@@ -134,7 +149,7 @@ export function MiniGame() {
       {isPlaying ? (
         <>
           <div className="flex gap-2 mb-6">
-            {sequence.map((char, index) => (
+            {sequences[currentSequenceIndex].map((char, index) => (
               <button
                 key={index}
                 className={`text-2xl flex justify-center items-center w-12 h-12 border rounded transition-all duration-300 ease-in-out ${
@@ -156,8 +171,9 @@ export function MiniGame() {
           <div className="w-full h-3 bg-gray-300 mb-4 relative">
             <div className="absolute w-full h-3 bg-primary/10 border border-primary"></div>
             <div 
-              className="h-full bg-primary animate-[shrink_var(--total-time)_linear_forwards]"
-              style={{ '--total-time': `${TOTAL_TIME}s` } as React.CSSProperties}
+              key={sequenceTimerKey}
+              className="h-full bg-primary animate-[shrink_var(--time-per-sequence)_linear_forwards]"
+              style={{ '--time-per-sequence': `${TIME_PER_SEQUENCE}s` } as React.CSSProperties}
             />
           </div>
           <div className="text-lg mb-4">Score: {score}</div>
@@ -167,7 +183,7 @@ export function MiniGame() {
             <h1 className="text-primary text-center uppercase">Mini-Game</h1>
             <button onClick={startGame} className="px-4 py-2 bg-primary text-background font-semibold rounded">Iniciar</button>
             {message && <div className="mt-6 text-2xl text-red-500">{message}</div>}
-            {sequence.length > 0 && (
+            {sequences.length > 0 && (
               <button onClick={() => setShowRanking(true)} className="mt-4 px-4 py-2 border bg-secondary text-white rounded">Exibir Ranking</button>
             )}
             {showRanking && (
