@@ -4,11 +4,11 @@ import { useKeyPress } from '../hooks/use-key-press'
 import { GameBoard } from './game-board'
 import { ScoreBoard } from './score-board'
 import { GameControls } from './game-controls'
-import lineLeft from '#/assets/line-left.svg'
-import crown from '#/assets/crown.svg'
-import lineRight from '#/assets/line-right.svg'
-import leftBottomCommas from '#/assets/left-bottom-commas.svg'
-import rightBottomCommas from '#/assets/right-bottom-commas.svg'
+import lineLeft from '/assets/line-left.svg'
+import crown from '/assets/crown.svg'
+import lineRight from '/assets/line-right.svg'
+import leftBottomCommas from '/assets/left-bottom-commas.svg'
+import rightBottomCommas from '/assets/right-bottom-commas.svg'
 
 export function MiniGame() {
   const {
