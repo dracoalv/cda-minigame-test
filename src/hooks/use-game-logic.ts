@@ -87,7 +87,7 @@ export const useGameLogic = () => {
           timerSound.play()
         }
       } else {
-        setResult(null)
+        setTimeout(() => setResult(null), 2) // Para tornar possível de testar.
       }
     } else {
       wrongSound.play()
