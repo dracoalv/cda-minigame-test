@@ -1,45 +1,103 @@
-# Desafio Front-End (Minigame)
+# CDA Minigame Test
 
-Sua tarefa é criar um minigame interativo utilizando React, onde o objetivo do jogador é seguir uma sequência aleatória de teclas o mais rápido possível.
+Este é um projeto de um minigame criado usando React, TypeScript e Vite. O objetivo é demonstrar habilidades em desenvolvimento front-end e testar a lógica do jogo com testes unitários utilizando Vitest.
 
-O minigame deve desafiar a habilidade do jogador de reagir rapidamente e corretamente dentro de um tempo limite.
+## Índice
 
-## Lógica do Minigame
+- [Visão Geral](#visão-geral)
+- [Funcionalidades](#funcionalidades)
+- [Pré-requisitos](#pré-requisitos)
+- [Instalação](#instalação)
+- [Scripts Disponíveis](#scripts-disponíveis)
+- [Executando o Ambiente de Desenvolvimento](#executando-o-ambiente-de-desenvolvimento)
+- [Construindo para Produção](#construindo-para-produção)
+- [Testes](#testes)
+- [Deploy](#deploy)
+- [Contato](#contato)
 
-Ao iniciar o jogo, uma sequência aleatória de teclas (por exemplo, letras de A a Z) deve ser gerada e exibida ao jogador.
+## Visão Geral
 
-O jogador deve pressionar as teclas na ordem correta dentro de um tempo limite.
+Este projeto é uma aplicação de minigame simples onde os jogadores devem seguir uma sequência de teclas. A aplicação usa `howler` para tocar sons durante o jogo, fornecendo feedback ao usuário.
 
-Se o jogador pressionar a tecla correta, a próxima tecla da sequência deve ser destacada.
+## Funcionalidades
 
-Se o jogador pressionar a tecla errada ou o tempo acabar, o jogo deve terminar e o jogador deve ser notificado.
+- Sequências dinâmicas de teclas.
+- Feedback sonoro para interações do usuário.
+- Contador de sequência mostrando progresso atual.
+- Testes unitários para garantir a qualidade do código.
 
-### Exemplo
+## Pré-requisitos
 
-![Exemplo](https://i.imgur.com/wJKIm8Q.gif)
+Antes de começar, certifique-se de ter o Node.js instalado na sua máquina. Você pode baixar o Node.js [aqui](https://nodejs.org/).
 
-## Requisitos
+## Instalação
 
-- A tela principal deve exibir a sequência atual de teclas que o jogador precisa pressionar.
+1. Clone o repositório:
+  ```sh
+    git clone https://github.com/seu-usuario/cda-minigame-test.git
+    cd cda-minigame-test
+  ```
 
-- Um indicador de tempo deve mostrar quanto tempo resta para completar a sequência.
+2. Instale as dependências:
+  ```sh
+    npm install
+  ```
 
-- Feedback visual para indicar se a tecla pressionada foi correta ou não.
+## Scripts Disponíveis
+No diretório do projeto, você pode executar:
 
-## Critérios de Avaliação:
+- npm run dev: Executa a aplicação em modo de desenvolvimento.
+Acesse http://localhost:5173 para ver no navegador.
 
-**Funcionalidade:** O jogo deve funcionar conforme descrito, com a geração de sequências, detecção de teclas pressionadas, e controle de tempo.
+- npm run build: Cria a versão de produção do aplicativo na pasta dist.
 
-**Código:** O código deve estar bem organizado e seguir as melhores práticas de desenvolvimento em React.
+- npm run lint: Verifica e corrige problemas de lint no código.
 
-**Criatividade:** Implementações adicionais ou melhorias no minigame serão valorizadas.
+- npm run preview: Visualiza a versão de produção do aplicativo localmente.
 
-## Extra (Opcional)
+- npm run test: Executa os testes unitários.
 
-- Um botão de reiniciar para começar o jogo do zero a qualquer momento.
+## Executando o Ambiente de Desenvolvimento
+Para iniciar o ambiente de desenvolvimento, execute:
 
-- Um ranking local para armazenar e exibir as melhores pontuações.
+```sh
+npm run dev
+```
+A aplicação estará disponível em http://localhost:3000.
 
-- Utilização de animações para tornar o minigame mais intuitivo e visualmente atraente.
+## Construindo para Produção
+Para construir o projeto para produção, execute:
 
-- Efeitos sonoros para feedback auditivo ao pressionar teclas corretas ou incorretas.
+```sh
+npm run build
+```
+Os arquivos de saída estarão na pasta dist. Você pode servir esses arquivos com qualquer servidor estático.
+
+## Testes
+Para executar os testes, utilize:
+
+```sh
+npm run test
+```
+
+## Deploy
+Este projeto está configurado para ser facilmente implantado no Vercel. Siga os passos abaixo para fazer o deploy:
+
+Crie uma conta no Vercel.
+Instale o Vercel CLI:
+```sh
+npm i -g vercel
+```
+
+Execute o comando para inicializar o projeto Vercel:
+```sh
+vercel
+```
+
+Siga as instruções interativas para configurar o projeto. O Vercel detectará automaticamente que você está usando Vite e configurará o build e as rotas corretamente.
+
+## Contato
+Para quaisquer dúvidas ou sugestões, entre em contato pelo dracoalv1@gmail.com.
+#
+
+Espero que este README seja útil para entender o projeto e configurar o ambiente de desenvolvimento. Se precisar de mais ajuda, sinta-se à vontade para perguntar!
