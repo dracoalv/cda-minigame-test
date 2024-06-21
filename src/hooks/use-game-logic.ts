@@ -10,7 +10,7 @@ import {
 
 const MAX_SEQUENCES = 3 // Total de sequencias por game
 const SEQUENCE_LENGTH = 8 // Total de teclas por sequência
-export const TIME_PER_SEQUENCE = 6 // Total de tempo por sequência
+export const TIME_PER_SEQUENCE = 4 // Total de tempo por sequência
 
 export const useGameLogic = () => {
   const [sequences, setSequences] = useState<string[][]>([])
