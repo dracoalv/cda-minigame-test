@@ -63,7 +63,7 @@ Para iniciar o ambiente de desenvolvimento, execute:
 ```sh
 npm run dev
 ```
-A aplicação estará disponível em http://localhost:3000.
+A aplicação estará disponível em http://localhost:5173.
 
 ## Construindo para Produção
 Para construir o projeto para produção, execute:
