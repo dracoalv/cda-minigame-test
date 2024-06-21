@@ -1,5 +1,5 @@
 export const generateSequence = (length: number): string[] => {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789'
+  const chars = 'QWEASD'
   return Array.from({ length }, () => chars[Math.floor(Math.random() * chars.length)])
 }
 
